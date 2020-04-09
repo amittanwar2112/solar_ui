@@ -289,12 +289,12 @@ $(document).ready(function(){
 	function Dataweekly(start_date,end_date,siteid) {
 			$("#table").dataTable().fnDestroy();
 			let xhr = new XMLHttpRequest();
-			let url = 'http://13.233.236.200:5000/report?site_id='+siteid+'&startdate='+start_date+'&enddate='+end_date;
+			let url = 'http://13.233.236.200:5000/weeklyreport/?site_id='+siteid+'&sdate='+start_date+'&edate='+end_date;
 			console.log(url);
 			xhr.open("GET", url);
 			xhr.send();
 
-			xhr.onload = () => populateData(xhr.response);
+			xhr.onload = () => populateDataweekly(xhr.response);
 			
 			
 		}
@@ -347,6 +347,12 @@ $(document).ready(function(){
 			 datahourly = JSON.parse( chartDataStr );
 			 console.log(datahourly);
 			 tabledatahourly();
+		}
+	    function populateDataweekly(chartDataStr) {
+			 dataweekly = JSON.parse( chartDataStr );
+			 console.log("dataweekly")
+			 console.log(dataweekly);
+			 tabledataweekly();
 		}
 		
 		
@@ -403,10 +409,39 @@ $(document).ready(function(){
 		   initialize_datatable();
 		}
 		
+		function tabledataweekly(){
+			let  j, x = "";		  
+			for(j in dataweekly.data){
+				x += "<tr><td>" 
+					+ dataweekly.site_name
+					+ "</td>" 
+					+ "<td>"
+					+ dataweekly.data[j].start_week 
+					+ "</td>" 
+					+ "<td>"
+					+ dataweekly.data[j].Energy 
+					+ "</td>"
+					+ "<td>"
+					+ dataweekly.data[j].Irradiance 
+					+"</td>"
+					+ "<td>"
+					+ dataweekly.data[j].PR 
+					+ "</td>" 
+					+ "<td>"
+					+ dataweekly.data[j].CUF 
+					+  "</td></tr>"; 						
+	  	   }  
+		   document.getElementById("tabledata").innerHTML = x;
+		   console.log(x);
+		   initialize_datatable();
+		}
+		
+		
 		$(document).ready(function() {
 			// initialize variables to populate datatable
 			var data = "";
 			var datahourly = "";
+			var dataweekly ="";
 			var selecteddate =0;
 			var startdate = null;
 			var enddate = null;

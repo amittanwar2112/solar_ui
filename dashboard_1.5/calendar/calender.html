@@ -82,10 +82,11 @@
 			}
 			function populatearrangedata(response){
 				let pdata = JSON.parse( response );
+				pdata=pdata.data;
 				pdata=pdata.reverse();
 				let x="";
 				console.log(" arrange data" );
-				console.log(pdata);
+				console.log(pdata.data);
 				if(pdata.length >= 12 ){
 				
 					pdata = pdata.filter((pdata,idx) => idx < 12)
