@@ -26,7 +26,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#" style="color:#ff0000;  font-size:200%; font-family:terminator">WHIRLYBIRD</a>
+      <a class="navbar-brand" href="../gispage.html" style="color:#ff0000;  font-size:200%; font-family:terminator">WHIRLYBIRD</a>
     </div>
     <ul class="nav navbar-nav" style="font-size:17px;">
       <li><a href="../index.html">DASHBOARD</a></li>
@@ -84,7 +84,7 @@
 						<input type="date" style="font-size:16px" id="startdate">
 					</div>
 					<div class="col-sm-1 header_margin" style="background-color:lavender;text-align:left">
-						<h5 style="color:black;font-weight: bold;">To</h5>
+						<h5 style="color:black;font-weight: bold;" id="to">To</h5>
 					</div>
 					<div class="col-sm-5 header_margin" style="background-color:lavender;text-align:left">
 						<input type="date" style="font-size:16px" id="enddate">
@@ -160,22 +160,32 @@ $(document).ready(function(){
      jQuery("#Periodic").click(function(e){
       $("#select").text("Plant Summar Periodic");
 	  tabletodraw=0;
+	  document.getElementById("enddate").style.visibility = "visible";
+	  document.getElementById("to").style.visibility = "visible";
 	});
    	jQuery("#weekly").click(function(e){
       $("#select").text("Plant Summary Weekly");
 	  tabletodraw=3;
+	  document.getElementById("enddate").style.visibility = "visible";
+	  document.getElementById("to").style.visibility = "visible";
    });
    jQuery("#daily").click(function(e){
       $("#select").text("Plant Summary Daily");
 	  tabletodraw=2;
+	  document.getElementById("enddate").style.visibility = "visible";
+	  document.getElementById("to").style.visibility = "visible";
    });
    jQuery("#monthly").click(function(e){
       $("#select").text("Plant Summary Monthly");
 	  tabletodraw=4;
+	  document.getElementById("enddate").style.visibility = "visible";
+	  document.getElementById("to").style.visibility = "visible";
    });
    jQuery("#hour").click(function(e){
       $("#select").text("Plant Summary Hourly");
 	  tabletodraw=1;
+	  document.getElementById("enddate").style.visibility = "hidden";
+	  document.getElementById("to").style.visibility = "hidden";
    });   
    
  	jQuery("#submit").click(function(e){
@@ -193,7 +203,7 @@ $(document).ready(function(){
 		Periodic(startdate,enddate,siteId);
 		}
 		if(tabletodraw==1){
-		Datahourly(startdate,enddate,siteId);
+		Datahourly(startdate,siteId);
 		}
 		if(tabletodraw==2){
 		Datadaily(startdate,enddate,siteId);
@@ -202,7 +212,7 @@ $(document).ready(function(){
 		Dataweekly(startdate,enddate,siteId);
 		}
 	    if(tabletodraw==4){
-		Dataweekly(startdate,enddate,siteId);
+		Datamonthly(startdate,enddate,siteId);
 		}
       
 	  
@@ -277,12 +287,12 @@ $(document).ready(function(){
 	function Datamonthly(start_date,end_date,siteid) {
 			$("#table").dataTable().fnDestroy();
 			let xhr = new XMLHttpRequest();
-			let url = 'http://13.233.236.200:5000/report?site_id='+siteid+'&startdate='+start_date+'&enddate='+end_date;
+			let url = 'http://13.233.236.200:5000/monthlydata/?site_id='+siteid+'&sdate='+start_date+'&edate='+end_date;
 			console.log(url);
 			xhr.open("GET", url);
 			xhr.send();
 
-			xhr.onload = () => populateData(xhr.response);
+			xhr.onload = () => populateDatamonthly(xhr.response);
 			
 			
 		}
@@ -313,22 +323,22 @@ $(document).ready(function(){
 	function Datadaily(start_date,end_date,siteid) {
 			$("#table").dataTable().fnDestroy();
 			let xhr = new XMLHttpRequest();
-			let url = 'http://13.233.236.200:5000/report?site_id='+siteid+'&startdate='+start_date+'&enddate='+end_date;
+			let url = 'http://13.233.236.200:5000/dailyreport/?site_id='+siteid+'&sdate='+start_date+'&edate='+end_date;
 			console.log(url);
 			xhr.open("GET", url);
 			xhr.send();
 
-			xhr.onload = () => populateData(xhr.response);
+			xhr.onload = () => populateDatadaily(xhr.response);
 			
 			
 		}
 
 
-		function Datahourly(start_date,end_date,siteid) {
+		function Datahourly(start_date,siteid) {
 			$("#table").dataTable().fnDestroy();
 			let xhr = new XMLHttpRequest();
 			//http://13.233.236.200:5000/plantreport?site_id=1&sdate=2020-03-25&edate=2020-03-26
-			let url = 'http://13.233.236.200:5000/plantreport?site_id='+siteid+'&sdate='+start_date+'&edate='+end_date;
+			let url = 'http://13.233.236.200:5000/hourlyreport/?site_id='+siteid+'&date='+start_date;
 			console.log(url);
 			xhr.open("GET", url);
 			xhr.send();
@@ -353,6 +363,18 @@ $(document).ready(function(){
 			 console.log("dataweekly")
 			 console.log(dataweekly);
 			 tabledataweekly();
+		}
+		function populateDatadaily(chartDataStr) {
+			 datadaily = JSON.parse( chartDataStr );
+			 console.log("dataweekly")
+			 console.log(datadaily);
+			 tabledatadaily();
+		}
+		function populateDatamonthly(chartDataStr) {
+			 datamonthly = JSON.parse( chartDataStr );
+			 console.log("datamonthly")
+			 console.log(datamonthly);
+			 tabledatamonthly();
 		}
 		
 		
@@ -382,33 +404,6 @@ $(document).ready(function(){
 		   console.log(x);
 		   initialize_datatable();
 		}
-		function tabledatahourly(){
-			let  j, x = "";		  
-			for(j in datahourly){
-				x += "<tr><td>" 
-					+ "I. K. Gujral PTU" 
-					+ "</td>" 
-					+ "<td>"
-					+ datahourly[j].start_hour 
-					+ "</td>" 
-					+ "<td>"
-					+ datahourly[j].Energy 
-					+ "</td>"
-					+ "<td>"
-					+ "0"
-					+"</td>"
-					+ "<td>"
-					+ datahourly[j].PR 
-					+ "</td>" 
-					+ "<td>"
-					+ datahourly[j].CUF 
-					+  "</td></tr>"; 						
-	  	   }  
-		   document.getElementById("tabledata").innerHTML = x;
-		   console.log(x);
-		   initialize_datatable();
-		}
-		
 		function tabledataweekly(){
 			let  j, x = "";		  
 			for(j in dataweekly.data){
@@ -436,12 +431,93 @@ $(document).ready(function(){
 		   initialize_datatable();
 		}
 		
+		function tabledatahourly(){
+			let  j, x = "";		  
+			for(j in datahourly.data){
+				x += "<tr><td>" 
+					+ datahourly.site_name
+					+ "</td>" 
+					+ "<td>"
+					+ datahourly.data[j].start_hour 
+					+ "</td>" 
+					+ "<td>"
+					+ datahourly.data[j].Energy 
+					+ "</td>"
+					+ "<td>"
+					+ datahourly.data[j].Irradiance 
+					+"</td>"
+					+ "<td>"
+					+ datahourly.data[j].PR 
+					+ "</td>" 
+					+ "<td>"
+					+ datahourly.data[j].CUF 
+					+  "</td></tr>"; 						
+	  	   }  
+		   document.getElementById("tabledata").innerHTML = x;
+		   console.log(x);
+		   initialize_datatable();
+		}
+		function tabledatadaily(){
+			let  j, x = "";		  
+			for(j in datadaily.data){
+				x += "<tr><td>" 
+					+ datadaily.site_name
+					+ "</td>" 
+					+ "<td>"
+					+ datadaily.data[j].start_day 
+					+ "</td>" 
+					+ "<td>"
+					+ datadaily.data[j].Energy 
+					+ "</td>"
+					+ "<td>"
+					+ datadaily.data[j].Irradiance 
+					+"</td>"
+					+ "<td>"
+					+ datadaily.data[j].PR 
+					+ "</td>" 
+					+ "<td>"
+					+ datadaily.data[j].CUF 
+					+  "</td></tr>"; 						
+	  	   }  
+		   document.getElementById("tabledata").innerHTML = x;
+		   console.log(x);
+		   initialize_datatable();
+		}
+		function tabledatamonthly(){
+			let  j, x = "";		  
+			for(j in datamonthly.data){
+				x += "<tr><td>" 
+					+ datamonthly.site_name
+					+ "</td>" 
+					+ "<td>"
+					+ datamonthly.data[j].start_month 
+					+ "</td>" 
+					+ "<td>"
+					+ datamonthly.data[j].Energy 
+					+ "</td>"
+					+ "<td>"
+					+ datamonthly.data[j].Irradiance 
+					+"</td>"
+					+ "<td>"
+					+ datamonthly.data[j].PR 
+					+ "</td>" 
+					+ "<td>"
+					+ datamonthly.data[j].CUF 
+					+  "</td></tr>"; 						
+	  	   }  
+		   document.getElementById("tabledata").innerHTML = x;
+		   console.log(x);
+		   initialize_datatable();
+		}
+		
 		
 		$(document).ready(function() {
 			// initialize variables to populate datatable
 			var data = "";
 			var datahourly = "";
 			var dataweekly ="";
+			var datadaily ="";
+			var datamonthly ="";
 			var selecteddate =0;
 			var startdate = null;
 			var enddate = null;

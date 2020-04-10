@@ -27,8 +27,8 @@
 			//console.log(" date");
 			//console.log(formatDate(new Date()));
 	
-	         function getcalendardata( site_Id, recor_dDate,) {
-
+	         function getcalendardata( site_Id, recor_dDate) {
+    
              // send it out
              let xhr = new XMLHttpRequest();
              let url = 'http://13.233.236.200:5000/calendardaily/?site_id='+site_Id+'&date='+recor_dDate;
@@ -39,9 +39,12 @@
              xhr.onload = () => populateCalendardata(xhr.response,);
 	
 			}
+			
+			
 			function populateCalendardata(response,dat1){
 			
 				let pdata = JSON.parse( response );
+				//
 				data = pdata;
 				console.log("data");
 				
@@ -129,7 +132,7 @@
 	        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="background-color: #333 !important">
 		          <!-- Brand/logo -->
 		          <a class="navbar-brand" href="#">
-			            <a class="navbar-brand" href="#" style="color:#ff0000;  font-size:150%; font-family:terminator">WHIRLYBIRD</a>
+			            <a class="navbar-brand" href="../gispage.html" style="color:#ff0000;  font-size:150%; font-family:terminator">WHIRLYBIRD</a>
 		          </a>
 				      
 		          <!-- Links -->
@@ -309,9 +312,9 @@
          $(document).ready( function() {
 			  //console.log(selectMonth.value);
 	           let recordDate=formatDate(new Date());
-			   getcalendardata( 1, recordDate )
+			   getcalendardata( siteId, recordDate )
 			   console.log(data);
-			   arrangedata(1);
+			   arrangedata(siteId);
 
          });
 		 
@@ -326,7 +329,7 @@
 			  monthselect=("0" + monthselect).slice(-2);
 			  let selectdate = selectYear.value + '-' + (monthselect);
 			  getcalendardata( siteId, selectdate );
-			  //showCalendar(currentMonth, currentYear);
+			  showCalendar(currentMonth, currentYear);
 			
  
 			});
@@ -341,24 +344,24 @@
 			  monthselect=("0" + monthselect).slice(-2);
 			  let selectdate = selectYear.value + '-' + (monthselect);
 			  getcalendardata( siteId, selectdate );
-			  //showCalendar(currentMonth, currentYear);
+			  showCalendar(currentMonth, currentYear);
 			
  
 			});
    jQuery("#previous").click(function(e){
-
+//var data=[];
     currentYear2 = (currentMonth2 === 0) ? currentYear2 - 1 : currentYear2;
     currentMonth2 = (currentMonth2 === 0) ? 11 : currentMonth2 - 1;
 	let currentMonth1= parseInt(currentMonth2);
 	currentMonth1=(currentMonth+1);
 	currentMonth1=("0" + currentMonth1).slice(-2);
-	console.log("currentYear");
-	console.log(currentYear);
-	console.log("currentMonth");
-	console.log(currentMonth1);
+	//console.log("currentYear");
+	//console.log(currentYear);
+	//console.log("currentMonth");
+	//console.log(currentMonth1);
 	let selectdate = currentYear2 + '-' + (currentMonth1);
-	console.log("selectdate");
-	console.log(selectdate);
+	//console.log("selectdate");
+	//console.log(selectdate);
 	getcalendardata( siteId, selectdate );
     //showCalendar(currentMonth, currentYear);
 
@@ -367,20 +370,20 @@
    
       jQuery("#next").click(function(e){
 
-	console.log(" before ");
-	console.log(currentMonth2);
+	//console.log(" before ");
+	//console.log(currentMonth2);
      currentYear2 = (currentMonth2 === 11) ? currentYear2 + 1 : currentYear2;
      currentMonth2 = (currentMonth2 + 1) % 12;
 	let currentMonth1= parseInt(currentMonth2);
 	currentMonth1=(currentMonth1 +1);
 	currentMonth1=("0" + currentMonth1).slice(-2);
-	console.log("currentYear");
-	console.log(currentYear);
-	console.log("currentMonth");
-	console.log(currentMonth1);
+	//console.log("currentYear");
+	//console.log(currentYear);
+	//console.log("currentMonth");
+	//console.log(currentMonth1);
 	let selectdate = currentYear2 + '-' + (currentMonth1);
-	console.log("selectdate");
-	console.log(selectdate);
+	//console.log("selectdate");
+	//console.log(selectdate);
 	getcalendardata( siteId, selectdate );
     //showCalendar(currentMonth, currentYear);
 

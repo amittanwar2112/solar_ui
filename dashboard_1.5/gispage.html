@@ -75,12 +75,14 @@ return dateTime;
 			 function populateData(response){
 			 
 			 alarmdatad = JSON.parse( response );
+
 			 console.log("alarmdatad");
 			console.log(alarmdatad);
 			 if(Array.isArray(alarmdatad) && alarmdatad.length){
 			  //console.log(alarmdatad);
-			  alert("alarm type is");
-		      alert(alarmdatad[0].alarm_name);
+			  //alert("alarm type is");
+		      //alert(alarmdatad[0].alarm_name);
+			  document.getElementById("mb").innerHTML = "Type is "+" "+ alarmdatad[0].alarm_name+" "+"Generated on"+" " + alarmdatad[0].open_time + " "+"From Inverter "+ alarmdatad[0].controller_id ;
 			 }
 			 }
 
@@ -149,26 +151,25 @@ console.log(" today date time");
 		console.log(inverter_time);
 		let diff =(current_time - inverter_time);
 	 if(diff < 2100000){
-		if(d==0){
+		if(d==0 && Array.isArray(alarmdatad) && alarmdatad.length){
 		
 			// prompt("alert type is:",c);
 	
-	      p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:green"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td> "+d+'<i class="far fa-bell"  id="alarm" data-target="#myModal"data-toggle="modal"  style="font-size:15px;color:red"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
+	      p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:green"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td> "+'1'+'<i class="far fa-bell"  id="alarm" data-target="#myModal"data-toggle="modal"  style="font-size:15px;color:red"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
 	   }
 	   else{
-		 alert("alarm type is");
-		 alert(c);
-		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:green"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+d+'<i class="far fa-bell" style="font-size:15px;color:green"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
+		
+		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:green"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+d+'<i class="far fa-bell" data-target="#myModal"data-toggle="modal" style="font-size:15px;color:green"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
 	   }
 	 }
 	 
 	else{
-	   if(d==0){
-		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:red"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+d+'<i class="far fa-bell" style="font-size:15px;color:red"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
+	   if(d==0 && Array.isArray(alarmdatad) && alarmdatad.length){
+		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:red"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+'1'+'<i class="far fa-bell" data-target="#myModal"data-toggle="modal" style="font-size:15px;color:red"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
 	  }
 	  else{
-		 alert("alarm type is");
-		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:red"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+d+'<i class="far fa-bell" style="font-size:15px;color:green"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
+		 
+		p += "<tr><td>"+'<i class="fas fa-wifi" style="font-size:20px;color:red"></i>' + "</td>"+"<td id='list' class='alert alert-warning'><a href='#' onclick='setSiteId("+data.site_list[i].site_id+")'>"+c+"</a></td>"+"<td>"+a+' '+'kW'+"</td>"+"<td>"+y+' '+'KWh'+"</td>"+"<td>"+z+"</td>"+"<td>"+d+'<i class="far fa-bell" data-target="#myModal"data-toggle="modal" style="font-size:15px;color:green"></i>'+"</td>"+"<td style='font-size:13px'>"+b+"</tr><td>";
 	  }
 	 
 	 }
@@ -254,8 +255,8 @@ console.log(" today date time");
                                           <h4 class="modal-title"></h4>
                                       </div>
 									        <div  id="alarm_type" class="modal-body">
-												alarm_type is
-												<p> </p>
+												alarm is
+												<p id="mb"> </p>
 											</div>
 
                                       <div class="modal-footer">
