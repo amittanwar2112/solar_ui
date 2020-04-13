@@ -210,7 +210,7 @@ function addInverterToDataTable( inverterdata ) {
 		    inverterData[idx].controller_name,
 		    inverterData[idx].inv_cap,
             inverterData[idx].ac_freq[0],
-            inverterData[idx].total_dcp,
+            
             inverterData[idx].total_acp,
             inverterData[idx].total_energy,
             inverterData[idx].today_energy,
@@ -226,7 +226,7 @@ function addInverterToDataTable( inverterdata ) {
 		    inverterData[idx].controller_name,
 		    inverterData[idx].inv_cap,
             inverterData[idx].ac_freq[0],
-            inverterData[idx].total_dcp,
+            
             inverterData[idx].total_acp,
             inverterData[idx].total_energy,
             inverterData[idx].today_energy,
@@ -313,3 +313,67 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
 	}
 	console.log(invPowerTs);
 }
+
+
+
+	function getInverterStringChartData(site_Id, record_Date,chartCallback, invArr, drawChart) {
+
+	           // send it out
+	           let xhr = new XMLHttpRequest();
+			   
+	           let url = 'http://13.233.236.200:5000/dcvoltagevscurrentplot/?site_id='+site_Id+'&date='+record_Date;
+	           console.log(url);
+	           xhr.open("GET", url);
+	           xhr.send();
+
+	           xhr.onload = () => populateInvertersString(xhr.response,chartCallback, invArr, drawChart);
+         }
+		 
+				 
+	function populateInvertersString(chartDataStr,chartCallback, invArr, drawChart){
+		
+		
+		let StringchartData = JSON.parse( chartDataStr );
+		//console.log("string data");
+		//console.log(StringchartData);
+		invStringTs =[];
+		invertersCurrentArr = {};
+	    invertersVoltageArr = {};
+		mpptcount={};
+             for( let key in StringchartData ) {
+                 let splitKey = key.split("_");
+                 if(splitKey[1] === "dcvoltage") {
+                     //inverterList.push(splitKey[0]);
+                     invertersVoltageArr[splitKey[0]] = StringchartData[key];
+                 } else if(splitKey[1] === "ts") {
+                     invStringTs = StringchartData[key];
+                 } else if(splitKey[1] === "dccurrent"){
+				  invertersCurrentArr[splitKey[0]] = StringchartData[key];
+				 } else if(splitKey[1] === "count"){
+				  mpptcount[splitKey[0]] = StringchartData[key];
+				 }
+				 
+                 //console.log(chartData[key]);
+             }
+			 
+			//console.log("mpptcount");
+			let mpps = [];
+			let value =[];
+			//console.log(mpptcount.mppt);
+			 
+			 for(let i in mpptcount.mppt){
+			 value.push(mpptcount.mppt[i])
+			 } 
+			 //console.log(value);
+			
+			for(let i in invStringTs){ 
+	             invStringTs[i] = invStringTs[i].slice(10);  
+	           }
+
+	           
+		}	
+
+
+
+
+

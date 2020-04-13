@@ -146,8 +146,8 @@
 					   drawInverterPower(y);
 					   index=y;
 					   //console.log(index);
-					   //console.log("selected inverter");
-					   //console.log(inverterList[y]);
+					   console.log("selected inverter");
+					   console.log(inverterList[y]);
 					   $("#inverter_selection").text(inverterList[y]);
 					   
 					   //drawInverterString(y);
@@ -304,7 +304,7 @@
 
              let selectHtml = "";
              for( idx in inverterList ) {
-                 selectHtml += "<li id='inv' ><a class='dropdown-item'  type='button' onclick='globalfunction("+ idx +")' name="+ idx +">" +inverterList[idx]+ "</a></li>"  ;
+                 selectHtml += "<li  ><a class='dropdown-item' id='inv' type='button' onclick='globalfunction("+ idx +")' name="+ idx +">" +inverterList[idx]+ "</a></li>"  ;
              }
 	           
              document.getElementById('inverter').innerHTML = selectHtml;
@@ -739,6 +739,9 @@ function drawAcvoltageVsCurrentPlant(chartDataStr) {
 	           //getInverterEnergyChartData(siteId, recordDate);
 			   
 	           request(recordDate,siteId);
+			   console.log("inverterList");
+			   //console.log(inverterList[0]);
+			   //$("#inverter_selection").text(inverterList[0]);
 	           //globalfunction(1);
          });
          
@@ -757,6 +760,7 @@ function drawAcvoltageVsCurrentPlant(chartDataStr) {
 	     		   
 	     		   //console.log(invertersPowerArr);
 	     		   request(recordDate,siteId);
+				    
 	     		   //globalfunction(0);
 	           
 	       });

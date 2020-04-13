@@ -146,7 +146,7 @@ function getInverterPowerData( siteId, recordDate ) {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "http://13.233.236.200:5000/powergraph/?site_id="+siteId+"&date="+recordDate);
     xhr.send();
-
+//http://13.233.236.200:5000/powergraph/?site_id="+1+"&date="+2020-02-01
     xhr.onload = () => drawInverterPower(xhr.response);
 }
 
@@ -214,5 +214,71 @@ function drawirradance( invirr) {
     draw_line_chart( invPowerChartData, pwr_ctx );
 }
 
+
+function drawString(selected_inverter) {
+
+ 
+	var invDataSetArr = [];
+
+
+	console.log("timestamps");
+	//console.log(invStringTs);
+	
+	let currentArr = [];
+	
+	let currentArr_selected_inverter =[];
+
+
+
+	for(let j in invertersCurrentArr ){
+    currentArr.push(invertersCurrentArr[j]);
+	 
+	}
+    console.log("currentArr");
+	
+   for(let k in currentArr[selected_inverter] ){
+	   
+	   	for( let j=0;j<currentArr[selected_inverter][0].length;j++ ){
+		currentArr_selected_inverter.push( currentArr[selected_inverter][k][j]);
+	   }
+		
+	}
+	console.log(currentArr_selected_inverter);
+	
+
+    console.log("length");
+	console.log(currentArr[selected_inverter][0].length)
+   for( let j=0;j<currentArr[selected_inverter][0].length;j++ ) {
+	   
+        console.log(Samples.utils.color(idx));
+        let invPwrDataset = {
+				    label: "MPPT"+(j+1),
+				    backgroundColor: Samples.utils.color(j),
+				    borderColor: Samples.utils.color(j),
+				    data: currentArr_selected_inverter,
+				    fill: false,
+		    };
+        invDataSetArr.push(invPwrDataset);
+    }
+	 
+     let invPowerChartData = {
+        labels:invStringTs,
+        datasets: invDataSetArr,
+        title:"Dc Current",
+        title_on: true,
+        x_label: "Time",
+        y_label: "Dc Current"
+    };
+
+
+    document.getElementById('dash_chart_div').innerHTML = "";
+    $('#dash_chart_div').append('<canvas id="dash_chart"></canvas>');
+    let pwr_ctx = document.getElementById('dash_chart').getContext('2d');
+
+    draw_line_chart( invPowerChartData, pwr_ctx );
+    //console.log(plantPowerIrrData);
+   
+//    e.preventDefault();
+}
 
 

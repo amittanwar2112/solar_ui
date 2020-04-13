@@ -244,7 +244,7 @@
 					                        <th>Inverter</th>
 					                        <th>Inverter Capacity(kW)</th>
                                             <th>Frequency (Hz)</th>
-                                            <th>DC Power (Kw)</th>
+                                            
                                             <th>Active Power (kW)</th>
                                             <th>Lifetime Generation (kW)</th>
                                             <th>Today's Energy (kW)</th>
@@ -258,7 +258,7 @@
 					                        <th>Inverter</th>
 					                        <th>Inverter Capacity(kW)</th>
                                             <th>Frequency (Hz)</th>
-                                            <th>DC Power (Kw)</th>
+                                            
                                             <th>Active Power (kW)</th>
                                             <th>Lifetime Generation (kW)</th>
                                             <th>Today's Energy (kW)</th>
@@ -548,6 +548,10 @@
    var siteId = 0;
    var recordDate = null;
    var chartToDraw = 1;
+   var invStringTs =[];
+   var invertersCurrentArr = {};
+   var invertersVoltageArr = {};
+   var mpptcount={};
   </script>
   
   <!-- Bootstrap core JavaScript-->
