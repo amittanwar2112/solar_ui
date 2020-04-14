@@ -279,6 +279,7 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
 	console.log(chartData);
     let invSelect = document.getElementById('inverter_select_pwr');
 	
+	
     inverterList = chartData.inv_list;
     for( let key in chartData ) {
         let splitKey = key.split("_");
@@ -291,21 +292,25 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
         console.log(chartData[key]);
     }
     let selectHtml = "";
+	
     for( idx in inverterList ) {
 		
         selectHtml += "<option value="+inverterList[idx]+">"+inverterList[idx]+"</option>";
-    }
+	}
+		
     if(drawChart) {
         chartCallback(invArr);
     }else {
         invSelect.innerHTML = selectHtml;
+		 //invSelectM.innerHTML = selectHtmlM;
         console.log('Enabling select picker');
         $('#inverter_select_pwr').selectpicker({noneSelectedText: 'Select Inverter'});
+		
     }
-    console.log("Inverter List");
-    console.log(inverterList);
-    console.log(invertersPowerArr);
-    console.log(invPowerTs);
+    //console.log("Inverter List");
+    //console.log(inverterList);
+
+    //onsole.log(invPowerTs);
 	for(let i in invPowerTs){
 	
 	 sliceinvPowerTs[i] = invPowerTs[i].slice(10);
@@ -316,12 +321,12 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
 
 
 
-	function getInverterStringChartData(site_Id, record_Date,chartCallback, invArr, drawChart) {
+	function getInverterStringChartData(site_Id,recordDate, chartCallback, invArr, drawChart) {
 
 	           // send it out
 	           let xhr = new XMLHttpRequest();
 			   
-	           let url = 'http://13.233.236.200:5000/dcvoltagevscurrentplot/?site_id='+site_Id+'&date='+record_Date;
+	           let url = 'http://13.233.236.200:5000/dcvoltagevscurrentplot/?site_id='+site_Id+'&date='+recordDate;
 	           console.log(url);
 	           xhr.open("GET", url);
 	           xhr.send();
@@ -339,6 +344,7 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
 		invStringTs =[];
 		invertersCurrentArr = {};
 	    invertersVoltageArr = {};
+		
 		mpptcount={};
              for( let key in StringchartData ) {
                  let splitKey = key.split("_");
@@ -355,16 +361,20 @@ function populateInvertersPower( chartDataStr, chartCallback, invArr, drawChart 
 				 
                  //console.log(chartData[key]);
              }
-			 
+			  if(drawChart) {
+               chartCallback(invArr);
+                }
+
 			//console.log("mpptcount");
 			let mpps = [];
 			let value =[];
-			//console.log(mpptcount.mppt);
+
 			 
 			 for(let i in mpptcount.mppt){
 			 value.push(mpptcount.mppt[i])
-			 } 
-			 //console.log(value);
+			 }
+			//console.log("invertersCurrentArr");	
+			 //console.log(invertersCurrentArr);
 			
 			for(let i in invStringTs){ 
 	             invStringTs[i] = invStringTs[i].slice(10);  

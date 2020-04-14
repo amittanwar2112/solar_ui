@@ -175,11 +175,8 @@
                             <!-- <input class="datepicker float-right" style="text-align:right;" id="record_date" data-date-format="mm/dd/yyyy" placeholder="">-->
                             <input type="date" id="record_date" style="text-align:right">
                             <div class="form-group" >
-                                <select  id="inverter_select_pwr"  name="basic" placeholder="Enter email" multiple data-live-search="true">
-                                    <!-- options -->
-									
-                                </select>
-                            </div>
+                                <select  id="inverter_select_pwr"  name="basic" placeholder="Enter email" multiple data-live-search="true" ></select>
+							</div>
                         
 								<div class="dropdown">
                                   <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style='font-size:15px'>
@@ -187,7 +184,7 @@
                                   <ul class="dropdown-menu dropdown-menu-right">
                                      <li style="font-size:15px"><a href="#" id="draw_ac_power">AC Power</a></li>
                                      <li style="font-size:15px"><a href="#" id="draw_ir_acp">Irradiance vs AC Power</a></li>
-				                     
+				                     <li style="font-size:15px"><a href="#" id="mppt">MPPT</a></li>
                  
                                   </ul>
                                  </div>
@@ -606,6 +603,13 @@
        chartToDraw = 2;
        getPowerVsIrradiationChartData( siteId, recordDate );
    });
+   
+      jQuery("#mppt").click(function(e){
+       chartToDraw = 4;
+	   drawString($('select#inverter_select_pwr').val());
+
+   });
+   
       jQuery("#irr1").click(function(e){
        
        IrradiationChartData( siteId, recordDate );
@@ -623,14 +627,33 @@
        getInstantDataFromServer( siteId );
        getInverterPowerChartData( siteId, recordDate, null, null, false );
        getDailyEnergyChartData(siteId);
+	   getInverterStringChartData(siteId,recordDate, null, null, false);
 	   console.log("inv list");
 	   console.log(inverterList);
 
    });
    $('#inverter_select_pwr').change( function() {
+    console.log("select#inverter_select_pwr")
+	console.log($('select#inverter_select_pwr').val());
+	console.log("chartToDraw");
+	console.log(chartToDraw);
+		if(chartToDraw == 4){
+		  drawString($('select#inverter_select_pwr').val());
+		}
+		else{
+		drawInverterPower($('select#inverter_select_pwr').val());
+		chartToDraw = 3;
+		}
+       
+       //drawInverterPower($('select#inverter_select_pwr').val());
+	   //drawString($('select#inverter_select_pwr').val());
+       
+   });
+     $('#inverter_select').change( function() {
+		    console.log("select#inverter_select_pwr")
        console.log($('select#inverter_select_pwr').val());
-       drawInverterPower($('select#inverter_select_pwr').val());
-       chartToDraw = 3;
+	   //drawString($('select#inverter_select_pwr').val());
+       //chartToDraw = 3;
    });
    
    $('#record_date').change( function() {
@@ -642,11 +665,13 @@
            getPowerVsIrradiationChartData( siteId, recordDate );
        } else if (chartToDraw == 3) {
            getInverterPowerChartData( siteId, recordDate,  drawInverterPower, $('select#inverter_select_pwr').val(), true);
+       } else if (chartToDraw == 4) {
+           getInverterStringChartData( siteId, recordDate,  drawString, $('select#inverter_select_pwr').val(), true);
        }
    });
    
 
-   $(document).ready(function() {  drawInverterPower($('#record_date').val());    });
+   //$(document).ready(function() {  drawInverterPower($('#record_date').val());    });
 
    $(document).ready(function() {
       
@@ -656,13 +681,17 @@
 		       getInverterDataFromServer( siteId );
 			   getInstantDataFromServer( siteId );
 		       getDailyEnergyChartData(siteId);
+			   
 		       if(chartToDraw == 1) {
            		 getPlantPowerChartData( siteId, recordDate);
        		 } else if (chartToDraw == 2) {
            		 getPowerVsIrradiationChartData( siteId, recordDate );
        		 } else if (chartToDraw == 3) {
            		 getInverterPowerChartData( siteId, recordDate,  drawInverterPower, $('select#inverter_select_pwr').val(), true);
+       		 } else if (chartToDraw == 4) {
+           		 getInverterStringChartData( siteId, recordDate,  drawString, $('select#inverter_select_pwr').val(), true);
        		 }
+			 
 
 		       setTimeout(reloadAjax, 500000);
 	     }

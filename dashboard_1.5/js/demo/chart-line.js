@@ -153,8 +153,12 @@ function getInverterPowerData( siteId, recordDate ) {
 function drawInverterPower( invArr ) {
     console.log('Drawing inverter power');
     let invDataSetArr = [];
+	console.log("invArr");
+	console.log(invArr);
     for( idx in invArr ) {
-        console.log(Samples.utils.color(idx));
+		console.log("invertersPowerArrinsidealoop");
+		console.log(invertersPowerArr[invArr[idx]]);
+        //console.log(Samples.utils.color(idx));
         let invPwrDataset = {
 				    label: invArr[idx],
 				    backgroundColor: Samples.utils.color(idx),
@@ -164,6 +168,8 @@ function drawInverterPower( invArr ) {
 		    };
         invDataSetArr.push(invPwrDataset);
     }
+		console.log("invPwrDataset");
+		console.log(invDataSetArr);
 
     let invPowerChartData = {
         labels:sliceinvPowerTs,
@@ -173,7 +179,7 @@ function drawInverterPower( invArr ) {
         x_label: "Time",
         y_label: "AC Power"
     };
-    console.log(invDataSetArr);
+    //console.log(invDataSetArr);
 
     document.getElementById('dash_chart_div').innerHTML = "";
     $('#dash_chart_div').append('<canvas id="dash_chart"></canvas>');
@@ -220,47 +226,44 @@ function drawString(selected_inverter) {
  
 	var invDataSetArr = [];
 
-
 	console.log("timestamps");
-	//console.log(invStringTs);
 	
 	let currentArr = [];
 	
 	let currentArr_selected_inverter =[];
+    let currentArr_selected_inverter1 =[];
 
-
-
-	for(let j in invertersCurrentArr ){
-    currentArr.push(invertersCurrentArr[j]);
-	 
-	}
-    console.log("currentArr");
-	
-   for(let k in currentArr[selected_inverter] ){
-	   
-	   	for( let j=0;j<currentArr[selected_inverter][0].length;j++ ){
-		currentArr_selected_inverter.push( currentArr[selected_inverter][k][j]);
-	   }
+	for(idx in selected_inverter  ){
 		
-	}
-	console.log(currentArr_selected_inverter);
-	
-
-    console.log("length");
-	console.log(currentArr[selected_inverter][0].length)
-   for( let j=0;j<currentArr[selected_inverter][0].length;j++ ) {
+	currentArr_selected_inverter1.push( invertersCurrentArr[selected_inverter[idx]]);
 	   
+	}
+
+
+	console.log("currentArr_selected_inverter1");
+	console.log(selected_inverter);
+
+	console.log("mpptcount.mppt");
+	console.log(mpptcount.mppt);
+	for(idx in selected_inverter){
+      for( let j=0;j<mpptcount.mppt[selected_inverter[idx]];j++ ) {
+		  console.log( "mpptcount.mppt[selected_inverter[idx]]");
+	  console.log( mpptcount.mppt[selected_inverter[idx]]);
         console.log(Samples.utils.color(idx));
+		console.log("invertersCurrentArr[selected_inverter[idx]]")
+		//console.log(invertersCurrentArr[selected_inverter[idx]]);
         let invPwrDataset = {
-				    label: "MPPT"+(j+1),
-				    backgroundColor: Samples.utils.color(j),
+				    label: selected_inverter[idx]+"_"+"MPPT"+(j+1),
+				    backgroundColor: Samples.utils.color(j+idx),
 				    borderColor: Samples.utils.color(j),
-				    data: currentArr_selected_inverter,
+				    data: invertersCurrentArr[selected_inverter[idx]],
 				    fill: false,
 		    };
         invDataSetArr.push(invPwrDataset);
     }
-	 
+	}
+	console.log("invDataSetArr");
+	console.log(invDataSetArr);
      let invPowerChartData = {
         labels:invStringTs,
         datasets: invDataSetArr,
@@ -276,6 +279,7 @@ function drawString(selected_inverter) {
     let pwr_ctx = document.getElementById('dash_chart').getContext('2d');
 
     draw_line_chart( invPowerChartData, pwr_ctx );
+	
     //console.log(plantPowerIrrData);
    
 //    e.preventDefault();

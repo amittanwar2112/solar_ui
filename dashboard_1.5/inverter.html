@@ -170,7 +170,7 @@
 							   //mpptfunction(0);
 					           getInverterPowerChartData( site_id, cdate );
 					           getInverterEnergyChartData(site_id, cdate);
-					           getInverterStringChartData(site_id, cdate);
+					           getInverterStringChartData(site_id);
 							   getAcvoltageVsCurrentChartData(site_id, cdate );
 					           //console.log("data");
 					           //console.log(data);
@@ -321,12 +321,12 @@
 
          }
 				 
-	function getInverterStringChartData(site_Id, record_Date) {
+	function getInverterStringChartData(site_Id) {
 
 	           // send it out
 	           let xhr = new XMLHttpRequest();
 			   
-	           let url = 'http://13.233.236.200:5000/dcvoltagevscurrentplot/?site_id='+site_Id+'&date='+record_Date;
+	           let url = 'http://13.233.236.200:5000/dcvoltagevscurrentplot/?site_id='+site_Id+'&date=2020-04-13';
 	           console.log(url);
 	           xhr.open("GET", url);
 	           xhr.send();
@@ -369,7 +369,8 @@
 			 for(let i in mpptcount.mppt){
 			 value.push(mpptcount.mppt[i])
 			 } 
-			 //console.log(value);
+			 console.log("invertersCurrentArr")
+			 console.log(invertersCurrentArr);
 			
 			for(let i in invStringTs){ 
 	             invStringTs[i] = invStringTs[i].slice(10);  

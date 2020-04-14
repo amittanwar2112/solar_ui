@@ -253,6 +253,7 @@ function drawString(selected_inverter) {
 	 
 	}
     console.log("currentArr");
+	console.log(currentArr);
 	
    for(let k in currentArr[selected_inverter] ){
 	   
